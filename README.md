@@ -1,12 +1,13 @@
 # HNG Stage 2 - Blue/Green Deployment
 
-# Setup
-1. Copy `.env.example` to `.env`
-2. Update the image URLs in `.env`
-3. Run: `docker-compose up -d`
+# Project Overview
+This project implements a Blue/Green deployment system using Docker Compose and Nginx reverse proxy. It provides automatic failover between two identical Node.js services with zero downtime.
 
-# Testing
-- Check version: `curl http://localhost:8080/version`
-- Trigger Blue failure: `curl -X POST http://localhost:8081/chaos/start?mode=error`
-- Verify Green takes over: `curl http://localhost:8080/version`
-- Stop chaos: `curl -X POST http://localhost:8081/chaos/stop`
+# Features
+- Blue/Green Deployment: Two identical services running simultaneously
+- Automatic Failover: Seamless switch from Blue to Green on failure
+- Zero Downtime: No failed client requests during failover
+- Health Monitoring: Built-in health checks and chaos testing endpoints
+- Dockerized: Easy deployment with Docker Compose
+
+
