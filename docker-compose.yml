@@ -5,6 +5,7 @@ services:
       - "8080:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - nginx_logs:/var/log/nginx
     depends_on:
       - app_blue
       - app_green
@@ -28,9 +29,24 @@ services:
       - APP_POOL=green
       - RELEASE_ID=${RELEASE_ID_GREEN}
       - PORT=${PORT:-3000}
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/healthz"]
-      interval: 5s
-      timeout: 2s
-      retries: 3
-      start_period: 10s
+  alert_watcher:
+    image: python:3.9-alpine
+    volumes:
+      - nginx_logs:/var/log/nginx
+      - ./watcher.py:/app/watcher.py
+      - ./requirements.txt:/app/requirements.txt
+    working_dir: /app
+    command: >
+      sh -c "pip install -r requirements.txt && python watcher.py"
+    environment:
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+      - ERROR_RATE_THRESHOLD=${ERROR_RATE_THRESHOLD}
+      - WINDOW_SIZE=${WINDOW_SIZE}
+      - ALERT_COOLDOWN_SEC=${ALERT_COOLDOWN_SEC}
+      - ACTIVE_POOL=${ACTIVE_POOL}
+    depends_on:
+      - nginx
+
+volumes:
+  nginx_logs:
+    

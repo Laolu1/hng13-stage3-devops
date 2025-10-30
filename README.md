@@ -1,13 +1,15 @@
-# HNG Stage 2 - Blue/Green Deployment
+# HNG Stage 3 - Blue/Green Deployment with Observability & Alerts
 
-# Project Overview
-This project implements a Blue/Green deployment system using Docker Compose and Nginx reverse proxy. It provides automatic failover between two identical Node.js services with zero downtime.
+## Project Overview
+This project extends the Stage 2 Blue/Green deployment with comprehensive observability and Slack alerts. It automatically monitors Nginx logs, detects failovers and error rates, and sends real-time alerts to Slack.
 
-# Features
-- Blue/Green Deployment: Two identical services running simultaneously
-- Automatic Failover: Seamless switch from Blue to Green on failure
-- Zero Downtime: No failed client requests during failover
-- Health Monitoring: Built-in health checks and chaos testing endpoints
-- Dockerized: Easy deployment with Docker Compose
+## Features
+- **Blue/Green Deployment**: Automatic failover between two identical services
+- **Real-time Monitoring**: Python log watcher tails Nginx access logs
+- **Slack Alerts**: Automatic notifications for failovers and high error rates
+- **Error Rate Tracking**: Sliding window calculation for 5xx errors
+- **Fast Failover**: Sub-3 second automatic switch between pools
+- **Dockerized**: Complete Docker Compose setup
+
 
 
